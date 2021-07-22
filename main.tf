@@ -1,7 +1,10 @@
-provider "aws" {}
+provider "aws" {
+	region = local.hcp_region
+}
 
 locals {
 	hcp_account_id = data.terraform_remote_state.terraform-hcp-core.outputs.aws_account_id
+	hcp_region = data.terraform_remote_state.terraform-hcp-core.outputs.hcp_hvn_region
 }
 
 resource "aws_ec2_transit_gateway" "this" {
