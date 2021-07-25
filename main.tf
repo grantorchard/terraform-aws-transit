@@ -1,5 +1,15 @@
 provider "aws" {
 	region = local.hcp_region
+	default_tags {
+   tags = {
+     owner       = "go"
+		 se-region   = "apj"
+		 purpose     = "hcp connectivity"
+     ttl         = "-1"
+		 terraform   = true
+		 hc-internet-facing = false
+   }
+ }
 }
 
 locals {
