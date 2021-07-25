@@ -17,11 +17,7 @@ locals {
 	hcp_region = data.terraform_remote_state.terraform-hcp-core.outputs.hcp_hvn_region
 }
 
-resource "aws_ec2_transit_gateway" "this" {
-  tags = {
-    Name = "hcp-hvn"
-  }
-}
+resource "aws_ec2_transit_gateway" "this" {}
 
 resource "aws_ram_resource_share" "this" {
   name                      = "hcp-hvn-resource-share"
