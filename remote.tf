@@ -9,7 +9,7 @@ data "terraform_remote_state" "terraform-hcp-core" {
   }
 }
 
-data "terraform_remote_state" "terraform-aws-core" {
+data "terraform_remote_state" "aws-core" {
   backend = "remote"
 
   config = {
