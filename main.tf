@@ -62,7 +62,7 @@ resource "aws_ec2_transit_gateway_vpc_attachment_accepter" "this" {
 resource "hcp_hvn_route" "route" {
 	for_each = toset(var.aws_subnets)
   hvn_link         = local.hcp_hvn_id
-  hvn_route_id     = "hcp to ${replace(split("/", each.value)[0], ".", "-")}"
+  hvn_route_id     = "hcp-to-${replace(split("/", each.value)[0], ".", "-")}"
   destination_cidr = each.value
   target_link      = hcp_aws_transit_gateway_attachment.this.id
 }
