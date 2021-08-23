@@ -29,6 +29,12 @@ resource "aws_ec2_transit_gateway" "this" {
 	dns_support = "enable"
 }
 
+# resource "aws_route" "hcp_vault" {
+# 	transit_gateway_id = aws_ec2_transit_gateway.this.id
+# 	destination_cidr_block = "172.25.16.0/24"
+# 	route_table_id = 
+# }
+
 resource "aws_ram_resource_share" "this" {
   name                      = "hcp-hvn-resource-share"
   allow_external_principals = true
@@ -57,9 +63,9 @@ resource "hcp_aws_transit_gateway_attachment" "this" {
 
 }
 
-resource "aws_ec2_transit_gateway_vpc_attachment_accepter" "this" {
-  transit_gateway_attachment_id = hcp_aws_transit_gateway_attachment.this.provider_transit_gateway_attachment_id
-}
+# resource "aws_ec2_transit_gateway_vpc_attachment_accepter" "this" {
+#   transit_gateway_attachment_id = hcp_aws_transit_gateway_attachment.this.provider_transit_gateway_attachment_id
+# }
 
 resource "hcp_hvn_route" "route" {
 	for_each = toset(var.aws_subnets)
