@@ -23,9 +23,9 @@ locals {
 resource "aws_ec2_transit_gateway" "this" {
 	amazon_side_asn = 65001
 	auto_accept_shared_attachments = "enable"
-	default_route_table_association = "enable"
-	default_route_table_propagation = "enable"
-	vpn_ecmp_support = "enable"
+	#default_route_table_association = "enable"
+	#default_route_table_propagation = "enable"
+	#vpn_ecmp_support = "enable"
 	dns_support = "enable"
 }
 
