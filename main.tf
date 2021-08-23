@@ -22,10 +22,10 @@ locals {
 
 resource "aws_ec2_transit_gateway" "this" {
 	amazon_side_asn = 65001
-	auto_accept_shared_attachments = "enable"
-	#default_route_table_association = "enable"
-	#default_route_table_propagation = "enable"
-	#vpn_ecmp_support = "enable"
+	#auto_accept_shared_attachments = "enable"
+	default_route_table_association = "enable"
+	default_route_table_propagation = "enable"
+	vpn_ecmp_support = "enable"
 	dns_support = "enable"
 }
 
@@ -54,6 +54,7 @@ resource "hcp_aws_transit_gateway_attachment" "this" {
   transit_gateway_attachment_id = "hcp-tgw-attachment"
   transit_gateway_id            = aws_ec2_transit_gateway.this.id
   resource_share_arn            = aws_ram_resource_share.this.arn
+
 }
 
 resource "aws_ec2_transit_gateway_vpc_attachment_accepter" "this" {
