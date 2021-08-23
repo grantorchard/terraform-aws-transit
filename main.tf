@@ -17,9 +17,8 @@ locals {
 	hcp_account_id = data.terraform_remote_state.terraform-hcp-core.outputs.aws_account_id
 	hcp_region = data.terraform_remote_state.terraform-hcp-core.outputs.hcp_hvn_region
 	hcp_hvn_id = data.terraform_remote_state.terraform-hcp-core.outputs.hcp_hvn_id
-	hcp_hvn_self_link = data.terraform_remote_state.terraform-hcp-core.outputs.self_link
 	vpc_ids = join(
-		data.terraform_remote_state.terraform-aws-core.outputs.vpc_id
+		 [ data.terraform_remote_state.terraform-aws-core.outputs.vpc_id ]
 	)
 }
 
