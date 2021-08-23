@@ -18,7 +18,7 @@ locals {
 	hcp_region = data.terraform_remote_state.terraform-hcp-core.outputs.hcp_hvn_region
 	hcp_hvn_id = data.terraform_remote_state.terraform-hcp-core.outputs.hcp_hvn_id
 	hcp_hvn_self_link = data.terraform_remote_state.terraform-hcp-core.outputs.hcp_hvn_self_link
-	route_table_ids = concat(terraform_remote_state.aws-core.outputs.public_route_table_ids, terraform_remote_state.aws-core.outputs.private_route_table_ids)
+	route_table_ids = concat(data.terraform_remote_state.aws-core.outputs.public_route_table_ids, data.terraform_remote_state.aws-core.outputs.private_route_table_ids)
 }
 
 resource "aws_ec2_transit_gateway" "this" {
