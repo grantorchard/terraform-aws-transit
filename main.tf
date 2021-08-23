@@ -17,6 +17,7 @@ locals {
 	hcp_account_id = data.terraform_remote_state.terraform-hcp-core.outputs.aws_account_id
 	hcp_region = data.terraform_remote_state.terraform-hcp-core.outputs.hcp_hvn_region
 	hcp_hvn_id = data.terraform_remote_state.terraform-hcp-core.outputs.hcp_hvn_id
+	hcp_hvn_self_link = data.terraform_remote_state.terraform-hcp-core.outputs.hcp_hvn_self_link
 }
 
 resource "aws_ec2_transit_gateway" "this" {
@@ -61,8 +62,8 @@ resource "aws_ec2_transit_gateway_vpc_attachment_accepter" "this" {
 
 resource "hcp_hvn_route" "route" {
 	for_each = toset(var.aws_subnets)
-  hvn_link         = "https://portal.cloud.hashicorp.com/orgs/11eb56d6-0f3b-54a4-a33c-0242ac110007${local.hcp_hvn_id}"
+  hvn_link         = local.hcp_hvn_id
   hvn_route_id     = "hcp-to-${replace(split("/", each.value)[0], ".", "-")}"
   destination_cidr = each.value
-  target_link      = "https://portal.cloud.hashicorp.com/orgs/11eb56d6-0f3b-54a4-a33c-0242ac110007/projects/11eb56d6-0f95-3a99-a33c-0242ac110007/hvns/hvn/transit-gateway-attachments/hcp-tgw-attachment"
+  target_link      = hcp_aws_transit_gateway_attachment.this.self_link
 }
