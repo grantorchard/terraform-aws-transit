@@ -19,6 +19,8 @@ locals {
 	hcp_hvn_id = data.terraform_remote_state.terraform-hcp-core.outputs.hcp_hvn_id
 	hcp_hvn_self_link = data.terraform_remote_state.terraform-hcp-core.outputs.hcp_hvn_self_link
 	route_table_id = data.terraform_remote_state.aws-core.outputs.default_route_table_id
+	subnet_ids = concat(data.terraform_remote_state.aws-core.outputs.private_subnets, data.terraform_remote_state.aws-core.outputs.public_subnets)
+	vpc_id = data.terraform_remote_state.aws-core.outputs.vpc_id
 }
 
 resource "aws_ec2_transit_gateway" "this" {
@@ -28,6 +30,12 @@ resource "aws_ec2_transit_gateway" "this" {
 	default_route_table_propagation = "enable"
 	vpn_ecmp_support = "enable"
 	dns_support = "enable"
+}
+
+resource "aws_ec2_transit_gateway_vpc_attachment" "this" {
+  subnet_ids         = local.subnet_ids
+  transit_gateway_id = aws_ec2_transit_gateway.this.id
+  vpc_id             = local.vpc_id
 }
 
 resource "aws_route" "hcp_vault" {
