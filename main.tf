@@ -18,7 +18,7 @@ locals {
 	hcp_region = data.terraform_remote_state.terraform-hcp-core.outputs.hcp_hvn_region
 	hcp_hvn_id = data.terraform_remote_state.terraform-hcp-core.outputs.hcp_hvn_id
 	hcp_hvn_self_link = data.terraform_remote_state.terraform-hcp-core.outputs.hcp_hvn_self_link
-	route_table_ids = concat(data.terraform_remote_state.aws-core.outputs.public_route_table_ids, data.terraform_remote_state.aws-core.outputs.private_route_table_ids)
+	route_table_id = data.terraform_remote_state.aws-core.outputs.default_route_table_id
 }
 
 resource "aws_ec2_transit_gateway" "this" {
@@ -31,10 +31,9 @@ resource "aws_ec2_transit_gateway" "this" {
 }
 
 resource "aws_route" "hcp_vault" {
-	for_each = toset(local.route_table_ids)
 	transit_gateway_id = aws_ec2_transit_gateway.this.id
 	destination_cidr_block = "172.25.16.0/24"
-	route_table_id = each.value
+	route_table_id = local.route_table_id
 }
 
 resource "aws_ram_resource_share" "this" {
