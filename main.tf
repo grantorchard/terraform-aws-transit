@@ -91,7 +91,7 @@ resource "hcp_hvn_route" "route" {
 resource "aws_security_group" "hcp" {
 	name        = "hcp access"
   description = "Permit access to Vault and Consul on HCP"
-  vpc_id      = aws_vpc.main.id
+  vpc_id      = local.vpc_id
 	egress = [
     {
       from_port        = 8200
