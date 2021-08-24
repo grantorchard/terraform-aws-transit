@@ -19,6 +19,8 @@ locals {
 	hcp_hvn_id = data.terraform_remote_state.terraform-hcp-core.outputs.hcp_hvn_id
 	hcp_hvn_self_link = data.terraform_remote_state.terraform-hcp-core.outputs.hcp_hvn_self_link
 	route_table_id = data.terraform_remote_state.aws-core.outputs.default_route_table_id
+	private_route_table_ids = data.terraform_remote_state.aws-core.outputs.private_route_table_ids
+	public_route_table_ids = data.terraform_remote_state.aws-core.outputs.public_route_table_ids
 	private_subnet_ids = data.terraform_remote_state.aws-core.outputs.private_subnets
 	public_subnet_ids = data.terraform_remote_state.aws-core.outputs.public_subnets
 	vpc_id = data.terraform_remote_state.aws-core.outputs.vpc_id
@@ -39,13 +41,24 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "private_subnets" {
   vpc_id             = local.vpc_id
 }
 
-resource "aws_route" "hcp_vault" {
+resource "aws_route" "private" {
+	for_each = toset(local.private_route_table_ids)
 	depends_on = [
 		aws_ec2_transit_gateway_vpc_attachment.private_subnets
 	]
 	transit_gateway_id = aws_ec2_transit_gateway.this.id
 	destination_cidr_block = "172.25.16.0/20"
-	route_table_id = local.route_table_id
+	route_table_id = each.value
+}
+
+resource "aws_route" "public" {
+	for_each = toset(local.public_route_table_ids)
+	depends_on = [
+		aws_ec2_transit_gateway_vpc_attachment.private_subnets
+	]
+	transit_gateway_id = aws_ec2_transit_gateway.this.id
+	destination_cidr_block = "172.25.16.0/20"
+	route_table_id = each.value
 }
 
 resource "aws_ram_resource_share" "this" {
