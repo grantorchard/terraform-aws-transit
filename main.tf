@@ -33,12 +33,6 @@ resource "aws_ec2_transit_gateway" "this" {
 	dns_support = "enable"
 }
 
-resource "aws_ec2_transit_gateway_vpc_attachment" "public_subnets" {
-	subnet_ids         = local.public_subnet_ids
-  transit_gateway_id = aws_ec2_transit_gateway.this.id
-  vpc_id             = local.vpc_id
-}
-
 resource "aws_ec2_transit_gateway_vpc_attachment" "private_subnets" {
 	subnet_ids         = local.private_subnet_ids
   transit_gateway_id = aws_ec2_transit_gateway.this.id
@@ -46,6 +40,9 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "private_subnets" {
 }
 
 resource "aws_route" "hcp_vault" {
+	depends_on = [
+		aws_ec2_transit_gateway_vpc_attachment.private_subnets
+	]
 	transit_gateway_id = aws_ec2_transit_gateway.this.id
 	destination_cidr_block = "172.25.16.0/24"
 	route_table_id = local.route_table_id
@@ -89,4 +86,48 @@ resource "hcp_hvn_route" "route" {
   hvn_route_id     = "hcp-to-${replace(split("/", each.value)[0], ".", "-")}"
   destination_cidr = each.value
   target_link      = hcp_aws_transit_gateway_attachment.this.self_link
+}
+
+resource "aws_security_group" "hcp" {
+	name        = "hcp access"
+  description = "Permit access to Vault and Consul on HCP"
+  vpc_id      = aws_vpc.main.id
+	egress = [
+    {
+      from_port        = 8200
+      to_port          = 8200
+      protocol         = "tcp"
+      cidr_blocks      = ["172.25.16.0/20"]
+    },
+		{
+			from_port        = 8300
+      to_port          = 8300
+      protocol         = "tcp"
+      cidr_blocks      = ["172.25.16.0/20"]
+		},
+		{
+			from_port        = 8301
+      to_port          = 8301
+      protocol         = "tcp"
+      cidr_blocks      = ["172.25.16.0/20"]
+		},
+		{
+			from_port        = 8301
+      to_port          = 8301
+      protocol         = "udp"
+      cidr_blocks      = ["172.25.16.0/20"]
+		},
+		{
+			from_port        = 80
+      to_port          = 80
+      protocol         = "tcp"
+      cidr_blocks      = ["172.25.16.0/20"]
+		},
+		{
+			from_port        = 443
+      to_port          = 443
+      protocol         = "tcp"
+      cidr_blocks      = ["172.25.16.0/20"]
+		}
+  ]
 }
