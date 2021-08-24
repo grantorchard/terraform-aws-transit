@@ -44,7 +44,7 @@ resource "aws_route" "hcp_vault" {
 		aws_ec2_transit_gateway_vpc_attachment.private_subnets
 	]
 	transit_gateway_id = aws_ec2_transit_gateway.this.id
-	destination_cidr_block = "172.25.16.0/24"
+	destination_cidr_block = "172.25.16.0/20"
 	route_table_id = local.route_table_id
 }
 
