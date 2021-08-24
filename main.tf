@@ -98,36 +98,42 @@ resource "aws_security_group" "hcp" {
       to_port          = 8200
       protocol         = "tcp"
       cidr_blocks      = ["172.25.16.0/20"]
+			ipv6_cidr_blocks = []
     },
 		{
 			from_port        = 8300
       to_port          = 8300
       protocol         = "tcp"
       cidr_blocks      = ["172.25.16.0/20"]
+			ipv6_cidr_blocks = []
 		},
 		{
 			from_port        = 8301
       to_port          = 8301
       protocol         = "tcp"
       cidr_blocks      = ["172.25.16.0/20"]
+			ipv6_cidr_blocks = []
 		},
 		{
 			from_port        = 8301
       to_port          = 8301
       protocol         = "udp"
       cidr_blocks      = ["172.25.16.0/20"]
+			ipv6_cidr_blocks = []
 		},
 		{
 			from_port        = 80
       to_port          = 80
       protocol         = "tcp"
       cidr_blocks      = ["172.25.16.0/20"]
+			ipv6_cidr_blocks = []
 		},
 		{
 			from_port        = 443
       to_port          = 443
       protocol         = "tcp"
       cidr_blocks      = ["172.25.16.0/20"]
+			ipv6_cidr_blocks = []
 		}
   ]
 }
