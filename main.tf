@@ -33,7 +33,8 @@ resource "aws_ec2_transit_gateway" "this" {
 }
 
 resource "aws_ec2_transit_gateway_vpc_attachment" "this" {
-  subnet_ids         = local.subnet_ids
+  for_each = toset(local.subnet_ids)
+	subnet_ids         = each.value
   transit_gateway_id = aws_ec2_transit_gateway.this.id
   vpc_id             = local.vpc_id
 }
