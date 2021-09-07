@@ -6,14 +6,14 @@ provider "aws" {
 }
 
 locals {
-	tags = merge(var.tags, {
+	tags = {
      owner       = "go"
 		 se-region   = "apj"
 		 purpose     = "hcp connectivity"
      ttl         = "-1"
 		 terraform   = true
 		 hc-internet-facing = false
-   })
+   }
 	hcp_account_id = data.terraform_remote_state.terraform-hcp-core.outputs.aws_account_id
 	hcp_region = data.terraform_remote_state.terraform-hcp-core.outputs.hcp_hvn_region
 	hcp_hvn_id = data.terraform_remote_state.terraform-hcp-core.outputs.hcp_hvn_id
