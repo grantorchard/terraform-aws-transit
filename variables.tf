@@ -9,3 +9,10 @@ variable "aws_subnets" {
 		"10.0.3.0/24"
 	]
 }
+
+variable "gcp_subnets" {
+	type = list(string)
+	default = [
+		"172.16.0.0/16"
+	]
+}
