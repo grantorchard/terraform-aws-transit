@@ -107,13 +107,13 @@ resource "hcp_aws_transit_gateway_attachment" "this" {
 #   transit_gateway_attachment_id = hcp_aws_transit_gateway_attachment.this.provider_transit_gateway_attachment_id
 # }
 
-resource "hcp_hvn_route" "route" {
-  for_each         = toset(var.aws_subnets)
-  hvn_link         = local.hcp_hvn_self_link
-  hvn_route_id     = "hcp-to-${replace(split("/", each.value)[0], ".", "-")}"
-  destination_cidr = each.value
-  target_link      = hcp_aws_transit_gateway_attachment.this.self_link
-}
+# resource "hcp_hvn_route" "route" {
+#   for_each         = toset(var.aws_subnets)
+#   hvn_link         = local.hcp_hvn_self_link
+#   hvn_route_id     = "hcp-to-${replace(split("/", each.value)[0], ".", "-")}"
+#   destination_cidr = each.value
+#   target_link      = hcp_aws_transit_gateway_attachment.this.self_link
+# }
 
 resource "aws_security_group" "hcp" {
   name        = "hcp access"
