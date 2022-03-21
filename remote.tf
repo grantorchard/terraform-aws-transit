@@ -4,7 +4,7 @@ data "terraform_remote_state" "terraform-hcp-core" {
   config = {
     organization = "grantorchard"
     workspaces = {
-      name = "terraform-hcp-core"
+      name = "hcp-core"
     }
   }
 }
@@ -15,7 +15,7 @@ data "terraform_remote_state" "aws-core" {
   config = {
     organization = "grantorchard"
     workspaces = {
-      name = "terraform-aws-core"
+      name = "aws-core"
     }
   }
 }
