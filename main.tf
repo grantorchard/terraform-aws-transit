@@ -196,24 +196,13 @@ resource "aws_security_group" "hcp" {
 		{
 			description = "consul"
       from_port        = 8301
-      to_port          = 8301
+      to_port          = 53
       protocol         = "udp"
       cidr_blocks      = ["172.25.16.0/20"]
 			ipv6_cidr_blocks = []
 			security_groups = []
 			prefix_list_ids = []
 			self = false
-    },
-		{
-			description = "consul"
-      from_port        = 8301
-      to_port          = 8301
-      protocol         = "tcp"
-      cidr_blocks      = ["172.25.16.0/20"]
-			ipv6_cidr_blocks = []
-			security_groups = []
-			prefix_list_ids = []
-			self = false
-    }
+		}
 	]
 }
