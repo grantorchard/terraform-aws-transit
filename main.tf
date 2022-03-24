@@ -145,7 +145,7 @@ resource "aws_security_group" "hcp" {
 			ipv6_cidr_blocks = []
 			security_groups = []
 			prefix_list_ids = []
-			self = false
+			self = true
 		},
 		{
 			description = "consul"
@@ -156,7 +156,7 @@ resource "aws_security_group" "hcp" {
 			ipv6_cidr_blocks = []
 			security_groups = []
 			prefix_list_ids = []
-			self = false
+			self = true
 		},
 		{
 			description = "consul"
@@ -216,4 +216,24 @@ resource "aws_security_group" "hcp" {
 			self = true
 		}
 	]
+}
+
+resource "aws_security_group_rule" "allow_self" {
+  description       = "Allow members of this security group to communicate over all ports"
+  protocol          = "-1"
+  security_group_id = aws_security_group.hcp.id
+  self              = true
+  from_port         = 0
+  to_port           = 0
+  type              = "ingress"
+}
+
+resource "aws_security_group_rule" "allow_all_egress" {
+  description       = "Allow egress access to the Internet."
+  protocol          = "-1"
+  security_group_id = aws_security_group.hcp.id
+  cidr_blocks       = ["0.0.0.0/0"]
+  from_port         = 0
+  to_port           = 0
+  type              = "egress"
 }
