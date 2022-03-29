@@ -263,8 +263,8 @@ resource "aws_security_group_rule" "allow_https_self_egress" {
   protocol          = "tcp"
   security_group_id = aws_security_group.hcp_consul.id
 	self 							= true
-  from_port         = 443
-  to_port           = 443
+  from_port         = 0
+  to_port           = 0
   type              = "egress"
 }
 
@@ -273,8 +273,8 @@ resource "aws_security_group_rule" "allow_https_self_ingress" {
   protocol          = "tcp"
   security_group_id = aws_security_group.hcp_consul.id
 	self 							= true
-  from_port         = 443
-  to_port           = 443
+  from_port         = 0
+  to_port           = 0
   type              = "ingress"
 }
 
