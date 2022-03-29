@@ -258,6 +258,26 @@ resource "aws_security_group_rule" "allow_serf_tcp_egress" {
   type              = "egress"
 }
 
+resource "aws_security_group_rule" "allow_https_self_egress" {
+	description       = "Allow members of this security group egress communication to HCP over https"
+  protocol          = "tcp"
+  security_group_id = aws_security_group.hcp_consul.id
+	self 							= true
+  from_port         = 443
+  to_port           = 443
+  type              = "egress"
+}
+
+resource "aws_security_group_rule" "allow_https_self_ingress" {
+	description       = "Allow members of this security group egress communication to HCP over https"
+  protocol          = "tcp"
+  security_group_id = aws_security_group.hcp_consul.id
+	self 							= true
+  from_port         = 443
+  to_port           = 443
+  type              = "ingress"
+}
+
 ## Vault Rules
 resource "aws_security_group_rule" "allow_vault_egress" {
   description       = "Allow members of this security group egress communication to Consul serf over udp"
