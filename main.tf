@@ -273,7 +273,6 @@ resource "aws_security_group_rule" "allow_https_self_ingress" {
   protocol          = "tcp"
   security_group_id = aws_security_group.hcp_consul.id
 	cidr_blocks = ["0.0.0.0/0"]
-	self 							= true
   from_port         = 0
   to_port           = 0
   type              = "ingress"
