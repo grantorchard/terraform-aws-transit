@@ -97,9 +97,9 @@ resource "hcp_aws_transit_gateway_attachment" "this" {
 
 }
 
-# resource "aws_ec2_transit_gateway_vpc_attachment_accepter" "this" {
-#   transit_gateway_attachment_id = hcp_aws_transit_gateway_attachment.this.provider_transit_gateway_attachment_id
-# }
+resource "aws_ec2_transit_gateway_vpc_attachment_accepter" "this" {
+  transit_gateway_attachment_id = hcp_aws_transit_gateway_attachment.this.provider_transit_gateway_attachment_id
+}
 
 resource "hcp_hvn_route" "route" {
 	for_each = toset(var.aws_subnets)
